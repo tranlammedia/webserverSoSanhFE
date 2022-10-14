@@ -50,7 +50,6 @@ app.get('/fetch', async (req, res) => {
 
 app.get('/', async (req, res)=> {
 
-  const products = await ProductSchema.find({})
   // res.send('get')
   res.json({
     success: true,

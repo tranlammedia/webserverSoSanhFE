@@ -54,7 +54,6 @@ app.get('/', async (req, res)=> {
   // res.send('get')
   res.json({
     success: true,
-    data : products
   })
 })
 

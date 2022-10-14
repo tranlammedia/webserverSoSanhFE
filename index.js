@@ -36,16 +36,17 @@ app.get('/fetch', async (req, res) => {
   const limit =200 //max 200
 
   //fetch pages merchants
-  const shopeePages = await fetchTotalData('shopee.vn', limit).then(data => data)
+  // const shopeePages = await fetchTotalData('shopee.vn', limit).then(data => data)
   // const lazadaPages = await fetchTotalData('lazada.vn', limit).then(data => data)
   // const tikiPages = await fetchTotalData('tiki.vn', limit).then(data => data)
   
   //fetchData các sàn: shopee mục 5911-5914 bị lỗi json
-  fetchData('shopee.vn',limit, 1, shopeePages)
+  // fetchData('shopee.vn',limit, 1, shopeePages)
   //  fetchData('lazada.vn',limit, 1, lazadaPages)
   //  fetchData('tiki.vn',limit, 1, tikiPages)
 
-  res.json(data)
+  // res.json(data)
+  res.end()
 })
 
 app.get('/', async (req, res)=> {

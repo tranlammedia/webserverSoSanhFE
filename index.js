@@ -12,6 +12,7 @@ const { convertStringToUTC } = require('./modules/convertStringToUTC');
 const { fetchData } = require('./modules/fetchData');
 const { fetchTotalData } = require('./modules/fetchTotalData');
 const { removeVietnamese } = require('./modules/removeVietnamese');
+const { stringToArray } = require('./modules/stringToArray');
 const { urlSource } = require('./modules/urlSource');
 
 const app = express();
@@ -41,15 +42,16 @@ app.get('/fetch', async (req, res) => {
   
   //fetchData các sàn: shopee mục 5911-5914 bị lỗi json
   fetchData('shopee.vn',limit, 1, shopeePages)
-  //  fetchData('lazada.vn',limit, 26, lazadaPages)
-  //  fetchData('tiki.vn',1, 1, tikiPages)
+  //  fetchData('lazada.vn',limit, 1, lazadaPages)
+  //  fetchData('tiki.vn',limit, 1, tikiPages)
 
   res.json(data)
 })
 
 app.get('/', async (req, res)=> {
 
-  const products = await ProductSchema.find().limit(10)
+  const products = await ProductSchema.find({})
+  // res.send('get')
   res.json({
     success: true,
     data : products
@@ -58,14 +60,19 @@ app.get('/', async (req, res)=> {
 
 app.get('/search', async (req, res)=> {
   const params = req.query
-  const {keyword, page} = params
+  const {keyword, merchant} = params
+  const arrayMerchants = stringToArray(merchant)
+
   const products = await ProductSchema
-    .find({ $text:{ $search: removeVietnamese(keyword)}}, {score: {$meta: 'textScore'}})
-    .sort( { score: { $meta: "textScore" } } )
-    
-  res.json({
-    success: true,
-    data : products
+    .find(
+      {'merchant': {$in: [...arrayMerchants]}, $text :{$search: removeVietnamese(keyword)}}, 
+      {score: {$meta: 'textScore'}
+    })
+    .sort( { score: { $meta: "textScore" }} )
+
+    res.json({
+      success: true,
+      data : products,  
   })
 })
 

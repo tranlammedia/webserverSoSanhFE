@@ -6,7 +6,7 @@ const { urlSource } = require("./urlSource")
 
 
 async function fetchOnePage(merchant, limit, position, pages) {
-    if(position <= pages ) {
+    if(position <= 50 ) {
         const reponse = await fetch(urlSource(merchant, limit, position), { method: 'GET', headers: HEADER})
         try {
             const data = await reponse.json()
@@ -42,7 +42,7 @@ async function fetchOnePage(merchant, limit, position, pages) {
             }
             console.log(err)
         }
-        setTimeout(() => fetchOnePage(merchant, limit, position, pages), 6000)
+        setTimeout(() => fetchOnePage(merchant, limit, position, pages), 12000)
     } else {
         console.log('finished:', merchant)
     }

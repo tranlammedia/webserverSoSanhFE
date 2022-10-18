@@ -67,7 +67,9 @@ app.get('/search', async (req, res)=> {
       {'merchant': {$in: [...arrayMerchants]}, $text :{$search: removeVietnamese(keyword)}}, 
       {score: {$meta: 'textScore'}
     })
+    .limit(2000)
     .sort( { score: { $meta: "textScore" }} )
+
 
     res.json({
       success: true,
